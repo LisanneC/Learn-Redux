@@ -1,11 +1,11 @@
 import { createStore, compse } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
-
-//import the root reducer
+//
+// //import the root reducer
 import rootReducer from './reducers/index';
-
-// data
+//
+// // data
 import comments from './data/comments';
 import posts from './data/posts';
 
@@ -18,5 +18,13 @@ const defaultState = {
 const store = createStore(rootReducer, defaultState);
 
 export const history = syncHistoryWithStore(browserHistory, store);
+
+// Hot Reloading Redux reducers
+if(module.hot) {
+  module.hot.accept('./reducers/',() => {
+    const nextRootReducer = require('./reducers/index').default;
+    store.replaceReducer(nextRootReducer);
+  })
+}
 
 export default store;
